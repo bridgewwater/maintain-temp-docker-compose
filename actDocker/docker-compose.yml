@@ -1,0 +1,33 @@
+# copy right by sinlov at https://github.com/sinlov
+# Licenses http://www.apache.org/licenses/LICENSE-2.0
+# more info see https://docker.github.io/compose/compose-file/
+version: '3'
+services:
+  # https://hub.docker.com/_/nginx/
+  nginx:
+    container_name: "nginx"
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "10000-10009:10000-10009"
+    volumes:
+      - "./data/nginx/conf/:/etc/nginx/conf.d/"
+      - "./data/nginx/home/:/home/"
+      # - "127.0.0.1:20000-20002:20000-20002"
+    restart: always # on-failure:3 or unless-stopped
+  # https://hub.docker.com/r/jazzdd/alpine-flask/
+  DevFlask17777:
+    container_name: "dev-flask-17777"
+    image: jazzdd/alpine-flask
+    ports:
+      - "17777:80"
+    volumes:
+      - "./data/Dev/flask-17777/app/:/app"
+    # network_mode: "host"
+    restart: on-failure:2
+networks:
+  default:
+    # Use a custom driver
+    #driver: custom-driver-1
+
